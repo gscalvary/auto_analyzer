@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.Optional;
@@ -38,7 +39,7 @@ public class IndexControllerTests {
     }
 
     @Test
-    public void getManufacturerBadId() {
+    public void getManufacturerNonExistantId() {
         // Prepare.
         when(manufacturerService.getManufacturer(anyInt())).thenReturn(Optional.empty());
 
@@ -48,6 +49,16 @@ public class IndexControllerTests {
         // Verify.
         assertEquals(null, result);
         verify(manufacturerService, times(1)).getManufacturer(0);
+    }
+
+    @Test
+    public void getManufacturerNullId() {
+        // Prepare and Execute.
+        Manufacturer result = indexController.getManufacturer(null);
+
+        // Verify.
+        assertEquals(null, result);
+        verifyNoInteractions(manufacturerService);;       
     }
 
     @Test

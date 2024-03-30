@@ -2,6 +2,7 @@ package info.coliver.auto_analyzer.controllers;
 
 import java.util.Optional;
 
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,6 +19,7 @@ public class IndexController {
     }
 
     @GetMapping("/manufacturer")
+    @Cacheable(cacheNames = "manufacturer", key = "#id")
     public @ResponseBody Manufacturer getManufacturer(@RequestParam(value = "id") Integer id) {
         if (id == null) {
             return null;
@@ -33,6 +35,7 @@ public class IndexController {
     }
     
     @GetMapping("/manufacturers")
+    @Cacheable(cacheNames = "manufacturers")
     public @ResponseBody Iterable<Manufacturer> getManufacturers() {
         return manufacturerService.getManufacturers();
     }
